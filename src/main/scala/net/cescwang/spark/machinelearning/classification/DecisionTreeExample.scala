@@ -1,6 +1,6 @@
 package net.cescwang.spark.machinelearning.classification
 
-import org.apache.spark.mllib.evaluation.MulticlassMetrics
+import org.apache.spark.mllib.evaluation.{BinaryClassificationMetrics, MulticlassMetrics}
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.mllib.tree.DecisionTree
 import org.apache.spark.mllib.tree.configuration.{Algo, Strategy}
@@ -18,7 +18,7 @@ object DecisionTreeExample {
     val model = new DecisionTree(Strategy.defaultStrategy(Algo.Classification)).run(training)
     val predictionAndLabels = test.map{ case LabeledPoint(label,features) =>
       val prediction = model.predict(features)
-      (label,prediction)
+      (prediction,label)
     }
     println("Accuracy = " + new MulticlassMetrics(predictionAndLabels).accuracy)  //Accuracy = 1.0
   }
