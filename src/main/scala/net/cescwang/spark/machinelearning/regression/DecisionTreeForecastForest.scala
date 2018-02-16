@@ -5,8 +5,8 @@ import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.mllib.tree.DecisionTree
-import org.apache.spark.mllib.tree.model.DecisionTreeModel
+import org.apache.spark.mllib.tree.{DecisionTree, RandomForest}
+import org.apache.spark.mllib.tree.model.{DecisionTreeModel, RandomForestModel}
 
 object DecisionTreeForecastForest {
 
@@ -39,22 +39,29 @@ object DecisionTreeForecastForest {
     new MulticlassMetrics(predictionAndLabels)
   }
 
+  def getMetrics(model: RandomForestModel, data: RDD[LabeledPoint]): MulticlassMetrics = {
+    val predictionAndLabels = data.map{ lp =>
+      val prediction = model.predict(lp.features)
+      (prediction,lp.label)
+    }
+    new MulticlassMetrics(predictionAndLabels)
+  }
+
   def main(args: Array[String]): Unit = {
     val session = SparkSession.builder().master("local[4]").appName("Decision Tree Regression").getOrCreate()
-    val path = "data/mllib/covtype.data"
+    val path = "data/mllib/AdvancedAnalytics/covtype.data"
     val data = load(session,path)
     val (trainData,testData) = split(data)
     trainData.cache()
     testData.cache()
-    /*for (impurity <- Array("gini", "entropy");
-         depth <- Array(1, 20);
-         bins <- Array(10, 300))
-      yield {
-        val model = DecisionTree.trainClassifier(
-          trainData, 7, Map[Int,Int](), impurity, depth, bins)
-        println((impurity,depth,bins)+"Accuracy: "+getMetrics(model,testData).accuracy)
-      }*/
-    val model = DecisionTree.trainClassifier(trainData, 7, Map[Int,Int](), "entropy", 20, 300)
-    println("Accuracy: "+getMetrics(model,testData).accuracy)   //Accuracy = 0.9222863761301364
+
+    val model = DecisionTree.trainClassifier(
+      trainData, 7, Map[Int,Int](10->4, 11->40),
+      "entropy", 30, 300)
+    println("Decision Tree Accuracy: "+getMetrics(model,testData).accuracy)
+    val forest = RandomForest.trainClassifier(
+      trainData, 7, Map(10 -> 4, 11 -> 40), 20,
+      "auto", "entropy", 30, 300)
+    println("Random Forest Accuracy: "+getMetrics(forest,testData).accuracy)  //Random Forest Accuracy: 0.963336930270798
   }
 }
