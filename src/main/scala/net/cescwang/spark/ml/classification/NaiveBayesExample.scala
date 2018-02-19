@@ -1,4 +1,4 @@
-package net.cescwang.spark.machinelearning.classification
+package net.cescwang.spark.ml.classification
 
 import org.apache.spark.mllib.classification.{NaiveBayes, NaiveBayesModel}
 import org.apache.spark.mllib.evaluation.MulticlassMetrics

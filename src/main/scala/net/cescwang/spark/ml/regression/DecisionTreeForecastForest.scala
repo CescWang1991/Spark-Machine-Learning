@@ -1,4 +1,4 @@
-package net.cescwang.spark.machinelearning.regression
+package net.cescwang.spark.ml.regression
 
 import org.apache.spark.mllib.evaluation.MulticlassMetrics
 import org.apache.spark.mllib.linalg.Vectors

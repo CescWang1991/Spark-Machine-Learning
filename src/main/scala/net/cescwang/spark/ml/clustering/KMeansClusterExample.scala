@@ -1,4 +1,4 @@
-package net.cescwang.spark.machinelearning.clustering
+package net.cescwang.spark.ml.clustering
 
 import org.apache.spark.mllib.clustering.{BisectingKMeans, KMeans}
 import org.apache.spark.mllib.linalg.Vectors
