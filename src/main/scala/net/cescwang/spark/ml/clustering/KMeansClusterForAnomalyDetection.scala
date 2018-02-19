@@ -4,7 +4,8 @@ import org.apache.spark.mllib.clustering.{BisectingKMeans, KMeans}
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.sql.SparkSession
 
-object KMeansClusterExample {
+object KMeansClusterForAnomalyDetection {
+
   def main(args: Array[String]): Unit = {
     val sc = SparkSession.builder()
       .master("local[4]")

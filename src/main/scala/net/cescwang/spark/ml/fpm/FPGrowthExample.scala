@@ -1,6 +1,5 @@
 package net.cescwang.spark.ml.fpm
 
-import org.apache.spark.HashPartitioner
 import org.apache.spark.mllib.fpm.FPGrowth
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
