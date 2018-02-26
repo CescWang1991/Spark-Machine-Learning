@@ -1,12 +1,12 @@
-package net.cescwang.spark.ml.regression
+package net.cescwang.spark.ml.classification
 
 import org.apache.spark.mllib.evaluation.MulticlassMetrics
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
+import org.apache.spark.mllib.tree.model.{DecisionTreeModel, RandomForestModel}
+import org.apache.spark.mllib.tree.{DecisionTree, RandomForest}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.mllib.tree.{DecisionTree, RandomForest}
-import org.apache.spark.mllib.tree.model.{DecisionTreeModel, RandomForestModel}
 
 object DecisionTreeForecastForest {
 
