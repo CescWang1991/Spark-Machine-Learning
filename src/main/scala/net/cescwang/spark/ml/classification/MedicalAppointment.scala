@@ -22,6 +22,7 @@ object MedicalAppointment extends App {
     .option("nullValue", "")
     .csv(path)
 
+  session.sparkContext.setLogLevel("ERROR")
   val csv = session.sparkContext.textFile(path)
   val header = csv.first()
   val data = csv.filter(_ != header)
@@ -74,18 +75,18 @@ object MedicalAppointment extends App {
     .setNumClasses(2)
     .run(train)
   val logisticRegressionPredictionAndLabels = test.map{ case LabeledPoint(label,features) =>
-    val prediction = naiveBayesModel.predict(features)
+    val prediction = logisticRegressionModel.predict(features)
     (label,prediction)
   }
   println("Accuracy of logistic Regression Classifier = " + new MulticlassMetrics(logisticRegressionPredictionAndLabels).accuracy)
-  // Accuracy of logistic Regression Classifier = 0.6422001639194973
+  // Accuracy of logistic Regression Classifier = 0.7947818960021856
 
   // Train the model by applying support vector machine
   val supportVectorMachineModel = SVMWithSGD.train(train, 100)
   val supportVectorMachinePredictionAndLabels = test.map{ case LabeledPoint(label,features) =>
-    val prediction = naiveBayesModel.predict(features)
+    val prediction = supportVectorMachineModel.predict(features)
     (label,prediction)
   }
   println("Accuracy of Support Vector Machine = " + new MulticlassMetrics(supportVectorMachinePredictionAndLabels).accuracy)
-  // Accuracy of Support Vector Machine = 0.6422001639194973
+  // Accuracy of Support Vector Machine = 0.7970130224933977
 }
